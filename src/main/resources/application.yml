@@ -1,7 +1,10 @@
+server:
+    port: 8884
+
 socket:
     port: 8885
     backlog: 1024
     max_content_length: 65536
 
 websocket:
-    url: ws://localhost:8885
+    url: ws://localhost:${socket.port}
