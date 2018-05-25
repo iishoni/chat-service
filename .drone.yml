@@ -1,0 +1,22 @@
+pipeline:
+  clean:
+    image: docker
+    volumes:
+      - /data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - sh /data/shell/clean.sh chat-service
+  build:
+    image: quay.io/dxk19911212/iishoni-maven
+    volumes:
+      - /data/maven:/root/.m2
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - mvn -s $MAVEN_SETTINGS/settings.xml clean package -Pprd dockerfile:build
+  deploy:
+    image: docker
+    volumes:
+      - /data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - sh /data/shell/setup.sh chat-service 8885
